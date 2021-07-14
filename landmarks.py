@@ -16,6 +16,10 @@ def detect_landmarks(src: np.ndarray, is_stream: bool = False):
 
 
 def normalize_landmarks(landmarks, height: int, width: int, mask: Iterable = None):
+    """
+    The landmarks returned by mediapipe have coordinates between [0, 1].
+    This function normalizes them in the range of the image dimensions so they can be played with.
+    """
     normalized_landmarks = np.array([(int(landmark.x * width), int(landmark.y * height)) for landmark in landmarks])
     if mask:
         normalized_landmarks = normalized_landmarks[mask]
@@ -23,6 +27,9 @@ def normalize_landmarks(landmarks, height: int, width: int, mask: Iterable = Non
 
 
 def plot_landmarks(src: np.array, landmarks: List, show: bool = False):
+    """
+    Given a source image and a list of landmarks plots them onto the image
+    """
     dst = src.copy()
     for x, y in landmarks:
         cv2.circle(dst, (x, y), 2, 0, cv2.FILLED)

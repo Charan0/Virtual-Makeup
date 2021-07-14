@@ -32,6 +32,9 @@ def blush_mask(src: np.ndarray, points: np.ndarray, color: list, radius: int):
 
 
 def clicked_at(event, x, y, flags, params):
+    """
+    After plotting the landmarks when clicked exactly on a landmark this function prints out the index
+    """
     if event == cv2.EVENT_LBUTTONDOWN:
         print(f"Clicked at {x, y}")
         point = np.array([x, y])
