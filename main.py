@@ -24,19 +24,22 @@ def apply_makeup(src: np.ndarray, is_stream: bool, feature: str, show_landmarks:
     return output
 
 
+# Video Input from Webcam
 video_capture = cv2.VideoCapture(0)
 while True:
     ret_val, frame = video_capture.read()
     frame = cv2.flip(frame, 1)
     if ret_val:
         cv2.imshow("Original", frame)
-        output = apply_makeup(frame, True, 'blush', True)
-        cv2.imshow("Feature", output)
+        feature = apply_makeup(frame, True, 'blush', True)
+        cv2.imshow("Feature", feature)
 
         if cv2.waitKey(1) == 27:
             break
 
+# # Static Images
 # image = cv2.imread("model.jpg", cv2.IMREAD_UNCHANGED)
+# print(image.shape)
 # output = apply_makeup(image, False, 'blush', True)
 #
 # cv2.imshow("Original", image)
