@@ -137,8 +137,7 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-# Specific .py files
-trial.py
+# Files specific to the implementation, but can be ignored
 obama.jpg
 dummy.py
 .idea

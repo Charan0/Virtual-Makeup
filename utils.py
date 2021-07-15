@@ -11,6 +11,7 @@ def lip_mask(src: np.ndarray, points: np.ndarray, color: list):
     mask = np.zeros_like(src)  # Create a mask
     mask = cv2.fillPoly(mask, [points], color)  # Mask for the required facial feature
     # Blurring the region, so it looks natural
+    # TODO: Get glossy finishes for lip colors, instead of blending in replace the region
     mask = cv2.GaussianBlur(mask, (7, 7), 5)
     return mask
 
@@ -20,6 +21,7 @@ def blush_mask(src: np.ndarray, points: np.ndarray, color: list, radius: int):
     Given a src image, points of the cheeks, desired color and radius
     Returns a colored mask that can be added to the src
     """
+    # TODO: Make the effect more subtle
     mask = np.zeros_like(src)  # Mask that will be used for the cheeks
     for point in points:
         mask = cv2.circle(mask, point, radius, color, cv2.FILLED)  # Blush => Color filled circle
@@ -32,14 +34,19 @@ def blush_mask(src: np.ndarray, points: np.ndarray, color: list, radius: int):
 
 def mask_skin(src: np.ndarray):
     """
-    Given a source image of a person (prolly face image)
+    Given a source image of a person (face image)
     returns a mask that can be identified as the skin
     """
-    lower = np.array([0, 133, 77], dtype='uint8')
-    upper = np.array([255, 173, 127], dtype='uint8')
-    dst = cv2.cvtColor(src, cv2.COLOR_BGR2YCR_CB)
-    skin_mask = cv2.inRange(dst, lower, upper)
-    return skin_mask
+    lower = np.array([0, 133, 77], dtype='uint8')  # The lower bound of skin color
+    upper = np.array([255, 173, 127], dtype='uint8')  # Upper bound of skin color
+    dst = cv2.cvtColor(src, cv2.COLOR_BGR2YCR_CB)  # Convert to YCR_CB
+    skin_mask = cv2.inRange(dst, lower, upper)  # Get the skin
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
+    skin_mask = cv2.dilate(skin_mask, kernel, iterations=2)[..., np.newaxis]  # Dilate to fill in blobs
+
+    if skin_mask.ndim != 3:
+        skin_mask = np.expand_dims(skin_mask, axis=-1)
+    return (skin_mask / 255).astype("uint8")  # A binary mask containing only 1s and 0s
 
 
 def face_mask(src: np.ndarray, points: np.ndarray):
@@ -53,8 +60,10 @@ def face_mask(src: np.ndarray, points: np.ndarray):
 
 def clicked_at(event, x, y, flags, params):
     """
-    After plotting the landmarks when clicked exactly on a landmark this function prints out the index
+    A useful callback that spits out the landmark index when clicked on a particular landmark
+    Note: Very sensitive to location, should be clicked exactly on the pixel
     """
+    # TODO: Add some atol to np.allclose
     if event == cv2.EVENT_LBUTTONDOWN:
         print(f"Clicked at {x, y}")
         point = np.array([x, y])
