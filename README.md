@@ -23,6 +23,12 @@ Original Sample |Lip Color applied
 ![Original Image](https://user-images.githubusercontent.com/40448838/125641792-46761f24-6418-4004-9381-910f9fbe5ef0.png) | ![Image with Lip color applied](https://user-images.githubusercontent.com/40448838/125641817-c0755878-2358-4e51-92bb-87531a2e04da.png)
 
 
+Original Sample |Foundation applied
+:-------------------------:|:-------------------------:
+![Original Image](https://user-images.githubusercontent.com/40448838/125849113-2f9e5147-ec37-4d85-991d-fe3b24240d83.png) | ![image](https://user-images.githubusercontent.com/40448838/125849001-54569ffd-194f-4755-a568-5f7f6a854e04.png)
+
+
+
 ## How it works
 Using mediapipe I detect 468 facial landmarks and and pull out the required landmarks (lips and cheek landmarks) and after that I use simple image processing techniques to achieve the end result
 
