@@ -45,12 +45,12 @@ def apply_makeup(src: np.ndarray, is_stream: bool, feature: str, show_landmarks:
 #         if cv2.waitKey(1) == 27:
 #             break
 
-# Static Images
-image = cv2.imread("model.jpg", cv2.IMREAD_UNCHANGED)
-output = apply_makeup(image, False, 'foundation', False)
-
-cv2.imshow("Original", image)
-cv2.imshow("Feature", output)
-
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+# # Static Images
+# image = cv2.imread("model.jpg", cv2.IMREAD_UNCHANGED)
+# output = apply_makeup(image, False, 'foundation', False)
+#
+# cv2.imshow("Original", image)
+# cv2.imshow("Feature", output)
+#
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
