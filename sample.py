@@ -1,3 +1,9 @@
+"""
+Sample script for making API call on webcam input.
+What did I even hope for? facepalm
+Can this work in real time?
+"""
+
 import cv2
 import requests
 import numpy as np
