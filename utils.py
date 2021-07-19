@@ -10,25 +10,49 @@ face_conn = [10, 338, 297, 332, 284, 251, 389, 264, 447, 376, 433, 288, 367, 397
 cheeks = [425, 205]
 
 
-def apply_makeup(src: np.ndarray, is_stream: bool, feature: str, show_landmarks: bool):
+def apply_makeup(src: np.ndarray, is_stream: bool, feature: str, show_landmarks: bool = False):
     """
     Takes in a source image and applies effects onto it.
     """
     ret_landmarks = detect_landmarks(src, is_stream)
     height, width, _ = src.shape
+    feature_landmarks = None
     if feature == 'lips':
         feature_landmarks = normalize_landmarks(ret_landmarks, height, width, upper_lip + lower_lip)
         mask = lip_mask(src, feature_landmarks, [153, 0, 157])
         output = cv2.addWeighted(src, 1.0, mask, 0.4, 0.0)
-    elif feature == 'blush':  # Defaults to blush for any other thing
+    elif feature == 'blush':
         feature_landmarks = normalize_landmarks(ret_landmarks, height, width, cheeks)
         mask = blush_mask(src, feature_landmarks, [153, 0, 157], 50)
         output = cv2.addWeighted(src, 1.0, mask, 0.3, 0.0)
-    else:
+    else:  # Defaults to blush for any other thing
         skin_mask = mask_skin(src)
         output = np.where(src * skin_mask >= 1, gamma_correction(src, 1.75), src)
-    if show_landmarks:
+    if show_landmarks and feature_landmarks is not None:
         plot_landmarks(src, feature_landmarks, True)
+    return output
+
+
+def apply_feature(src: np.ndarray, feature: str, landmarks: list, normalize: bool = False,
+                  show_landmarks: bool = False):
+    """
+    Performs similar to `apply_makeup` but needs the landmarks explicitly
+    Specifically implemented to reduce the computation on the server
+    """
+    height, width, _ = src.shape
+    if normalize:
+        landmarks = normalize_landmarks(landmarks, height, width)
+    if feature == 'lips':
+        mask = lip_mask(src, landmarks, [153, 0, 157])
+        output = cv2.addWeighted(src, 1.0, mask, 0.4, 0.0)
+    elif feature == 'blush':
+        mask = blush_mask(src, landmarks, [153, 0, 157], 50)
+        output = cv2.addWeighted(src, 1.0, mask, 0.3, 0.0)
+    else:  # Does not require any landmarks for skin masking -> Foundation
+        skin_mask = mask_skin(src)
+        output = np.where(src * skin_mask >= 1, gamma_correction(src, 1.75), src)
+    if show_landmarks:  # Refrain from using this during an API Call
+        plot_landmarks(src, landmarks, True)
     return output
 
 
