@@ -139,8 +139,8 @@ cython_debug/
 
 # Files specific to the implementation, but can be ignored
 obama.jpg
-dummy.py
 .idea
 foreground.py
 landmarks.py
 test.py
+model.png
