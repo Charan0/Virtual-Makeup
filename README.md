@@ -32,5 +32,12 @@ Original Sample |Foundation applied
 ## How it works
 Using mediapipe I detect 468 facial landmarks and and pull out the required landmarks (lips and cheek landmarks) and after that I use simple image processing techniques to achieve the end result
 
-## Future Scope
-Prolly API endpoints for static images using `fast-api`. **Fingers Crossed**
+## File structure
+`main.py` -> Primary file, reads the input image and applies the makeup  
+`api.py` -> Contains the fastapi endpoints  
+`landmarks.py` -> Contains all the functionality for the landmarks (detection, normalization etc)  
+`sample.py` -> A sample script that uses `python-requests` to demonstrate the endpoints  
+`utils.py`  -> Contains utility functions.  
+
+## Fast API
+Provides openapi spec by default, run using `uvicorn api:app` and navigate to localhost:8000/docs to view the openapi spec or to localhost:8000/redoc to view the redoc spec. Currently two API Endpoints are supported `apply-makeup` and `apply-feature` (Needs Fix, doesn't work as of now)
