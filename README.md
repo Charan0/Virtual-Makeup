@@ -1,5 +1,5 @@
 # Virtual-Makeup
-Python, OpenCV based virtual tryon for makeup (lipcolor, blush, foundation prolly eyewear too)
+Python, OpenCV based virtual tryon for makeup lip-color, blush, foundation ~~and prolly eyewear too~~
 
 These python scripts add "make up" on to an input. The input is either a static image of a person's face or live webcam feed.
 Currently only lipcolor and face blush is supported and the color of defaults to `rgb(157, 0, 153)` but it can be changed.
